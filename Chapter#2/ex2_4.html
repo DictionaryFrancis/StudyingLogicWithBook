@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Restaurant Buffet</h1>
+
+    <form>
+        <p> Buffet per kg $:
+            <input type="text" id="inKiloPrice" required>
+        </p>
+        <p> Customer Consume(grams):
+            <input type="text" id="inGrams" required>
+        </p>
+        <input type="submit" value="Price">
+    </form>
+    <h3 id="outPrice"></h3>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const outPrice = document.getElementById("outPrice")
+
+        form.addEventListener("submit", (e) => {
+            const kiloPrice = form.inKiloPrice.value
+            const grams = form.inGrams.value
+
+            const value = (kiloPrice / 1000) * grams
+
+            outPrice.innerText = "Total is $" + value.toFixed(2)
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

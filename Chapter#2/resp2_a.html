@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Drugstore</h1>
+
+    <form>
+        <p> Medicine:
+            <input type="text" id="inMedicine" required>
+        </p>
+        <p> Price$:
+            <input type="text" id="inPrice" required>
+        </p>
+        <input type="submit" value="Show the Promotion">
+    </form>
+    <h3 id="outMedicineName"></h3>
+    <h3 id="outPromotion"></h3>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const medicineName = document.getElementById("outMedicineName")
+        const outPromotion = document.getElementById("outPromotion")
+
+        form.addEventListener("submit", (e) => {
+            const item = form.inMedicine.value
+            const price = form.inPrice.value
+
+            const sumPromotion = Math.floor(price * 2)
+
+            medicineName.innerText = "Item in promotion is " + item
+            outPromotion.innerText = "Promotion take two and pay: " + sumPromotion.toFixed(2)
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

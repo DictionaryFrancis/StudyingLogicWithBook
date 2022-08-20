@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Car Value</h1>
+
+    <form>
+        <p> Veiculo
+            <input type="text" id="carName" required>
+        </p>
+        <p> Price $:
+            <input type="number" id="carPrice" required>
+        </p>
+        <input type="submit" value="Look at Promotion">
+    </form>
+    <h3 id="outTitle-Elem"></h3>
+    <h3 id="firstPayment-Elem"></h4>
+    <h3 id="parcel-Elem"></h4>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const outCarName = document.getElementById("outTitle-Elem")
+        const outFirstPayment = document.getElementById("firstPayment-Elem")
+        const outParcel = document.getElementById("parcel-Elem")
+
+        form.addEventListener("submit", (e) => {
+            const title = form.carName.value
+            const price = Number(form.carPrice.value)
+
+            const firstPayment = price * 0.50
+            const parcel = (price * 0.50)/12
+            
+            outCarName.innerText = `Promotion: ${title}`
+            outFirstPayment.innerText = "First Payment: $" + firstPayment.toFixed(2)
+            outParcel.innerText = "+ 12x of $" + parcel.toFixed(2)
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

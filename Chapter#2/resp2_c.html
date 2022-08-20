@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Supermercado</h1>
+
+    <form>
+        <p> Product:
+            <input type="text" id="inItem" required>
+        </p>
+        <p> Price $:
+            <input type="text" id="inPrice" required>
+        </p>
+        <input type="submit" value="See Promotion">
+    </form>
+    <h3 id="outPromotion"></h3>
+    <h3 id="outPrice"></h3>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const promotion = document.getElementById("outPromotion")
+        const price = document.getElementById("outPrice")
+
+
+        form.addEventListener("submit", (e) => {
+            const product = form.inItem.value
+            const productPrice = Number(form.inPrice.value)
+
+            const discount = productPrice * 0.50
+            const sum = (productPrice * 3) - discount
+            
+            promotion.innerText = product +" - Promotion 3 per $: " + sum.toFixed(2)
+            price.innerText = "The 3th product cost is $" + discount.toFixed(2)
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

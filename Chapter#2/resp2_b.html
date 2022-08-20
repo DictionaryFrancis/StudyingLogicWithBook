@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Lan House</h1>
+
+    <form>
+        <p> Price per 15min is $:
+            <input type="text" id="inPrice" required>
+        </p>
+        <p> Customer time:
+            <input type="text" id="inTime" required>
+        </p>
+        <input type="submit" value="Price to be Paid">
+    </form>
+    <h3 id="outPrice"></h3>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const pricePaid = document.getElementById("outPrice")
+
+
+        form.addEventListener("submit", (e) => {
+            const price = Number(form.inPrice.value)
+            const time = Number(form.inTime.value)
+
+            const sum = Math.ceil(time/15)*price
+
+            pricePaid.innerText = "Total to be paid is $: " + sum.toFixed(2)
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

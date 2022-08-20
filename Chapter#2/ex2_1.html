@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Coding Welcome</h1>
+    <form>
+        <p>Name 
+            <input type="text" id="name">
+            <input type="submit" value="Mostrar">
+        </p>
+        <h3 id="answer"></h3>
+    </form>
+
+
+    <script>
+        
+        const form = document.querySelector("form")
+        const answer = document.querySelector("h3")
+
+        form.addEventListener("submit", (e) => {
+            const name = document.getElementById("name").value
+            answer.innerText = `Hello ${name}`
+            e.preventDefault() // ask Felipe when to use
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>

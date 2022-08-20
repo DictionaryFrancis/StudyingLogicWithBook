@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Movies Duration</h1>
+
+    <form>
+        <p> Título do Filme:
+            <input type="text" id="inTitle" required>
+        </p>
+        <p> Duração (min):
+            <input type="number" id="inDuration" required>
+        </p>
+        <input type="submit" value="Converter em Horas e Minutos">
+    </form>
+    <h3 id="outTitle-Elem"></h3>
+    <h4 id="outConvert-Elem"></h4>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const outTitle = document.getElementById("outTitle-Elem")
+        const outConvert = document.getElementById("outConvert-Elem")
+
+        form.addEventListener("submit", (e) => {
+            const title = form.inTitle.value
+            const duration = Number(form.inDuration.value)
+
+            const hours = Math.floor(duration / 60)
+            const minutes = duration % 60 //return the result of the division
+
+            outTitle.innerText = title
+            outConvert.innerText = `${hours} hour(s) and ${minutes} minutes`
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>
