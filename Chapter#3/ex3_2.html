@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+        img{
+            margin: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <img src="../images/Capture.PNG" width="250px" alt="">
+
+    <section>
+        <h1>Calculate Ideal Weight</h1>
+
+        <form>
+            <p> Client Name:
+                <input type="text" id="clientName" required>
+            </p>
+            <p> Gender:
+                <input type="radio" name="gender" id="rbMale" > Male
+                <input type="radio" name="gender" id="rbFemale" > Female
+            </p>
+            <p> Height:
+                <input type="text" id="inHeight" required>
+            </p>
+            <input type="submit" value="Show Ideal Weight">
+            <input type="submit" value="Clear Data">
+        </form>
+        <h3 id="answer"></h3>
+    </section>
+
+    <script>
+
+        const form = document.querySelector("form")
+        const idealWeight = document.getElementById("answer")
+        const rbMale = document.getElementById("rbMale")
+        const rbFemale = document.getElementById("rbFemale")
+
+
+        form.addEventListener("submit", (e) => {
+            const name = form.clientName.value
+            const height = Number(form.firstMark.value)
+            const male = rbMale.checked
+            const female = rbFemale.checked
+
+            //Verify if the gender and name was filled out
+            if (name == "" || (male == false && female == false)) {
+                alert("Please, infrom your name and gender...")
+                name.focus() // focus in the variable state
+                return
+            }
+            if (altura == 0 || isNaN(altura)) {
+                alert("Please, infrom your name and gender correctly...")
+                height.focus()
+                return
+            }
+
+            if(male){
+                var weight = 22 * Math.pow(height,2) 
+            }else{
+                var weight = 21 * Math.pow(height,2)
+            }
+
+
+            idealWeight.innerText = name + ":Your ideal weight is  " + weight.toFixed(3)
+
+            
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

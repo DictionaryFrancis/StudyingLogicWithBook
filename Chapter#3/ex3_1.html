@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <h1>Student Average Score</h1>
+
+    <form>
+        <p> Student name:
+            <input type="text" id="studentName" required>
+        </p>
+        <p> First Mark:
+            <input type="text" id="firstMark" required>
+        </p>
+        <p> Second Mark:
+            <input type="text" id="secondMark" required>
+        </p>
+        <input type="submit" value="Show Media">
+    </form>
+    <h3 id="averageScore"></h3>
+    <h3 id="answer"></h3>
+
+
+    <script>
+
+        const form = document.querySelector("form")
+        const average = document.getElementById("averageScore")
+        const situation = document.getElementById("answer")
+
+        form.addEventListener("submit", (e) => {
+            const name = form.studentName.value
+            const mark1 = Number(form.firstMark.value)
+            const mark2 = Number(form.secondMark.value)
+
+            const score = (mark1 + mark2)/2
+
+            average.innerText = "Average Score is " + score
+
+            if (score >= 7) {
+                situation.textContent = "Congrats " + name + "! You were approved"
+                situation.style.color = "blue"
+            }else{
+                situation.textContent = "Ops " + name + "...You were disapproved"
+                situation.style.color = "red"
+            }
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>
