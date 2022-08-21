@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        img {
+            margin: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <img src="ex4_4.jpg" width="250px" height="250px" alt="">
+
+    <section>
+        <h1>TimeZone</h1>
+
+        <form>
+            <p> Brazil Time:
+                <input type="text" id="inTime">
+            </p>
+            <input type="submit" value="Display french time">
+        </form>
+        <h3 id="answer"></h3>
+    </section>
+
+    <script>
+
+        const form = document.querySelector("form")
+        const outTime = document.getElementById("answer")
+
+
+        form.addEventListener("submit", (e) => {
+            const brazilTime = Number(form.inTime.value)
+
+            //Verify if the gender and name was filled out
+            if (brazilTime.value == "" || isNaN(brazilTime)) {
+                alert("Please, infrom your Brazil time...")
+                name.focus() // focus in the variable state
+                return
+            }
+
+            let frenchTime = brazilTime + 5 
+
+
+            if (frenchTime > 24) {
+                frenchTime = frenchTime - 24
+                //- 24 coz hours cannot be read like 25 o`clock
+                //so transform in am
+            }
+
+            outTime.textContent = "France timezone is: " + frenchTime.toFixed(2)
+
+        
+
+
+            e.preventDefault()
+        })
+
+
+    </script>
+</body>
+
+</html>

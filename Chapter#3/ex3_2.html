@@ -12,7 +12,8 @@
             display: flex;
             flex-direction: row;
         }
-        img{
+
+        img {
             margin: 10px;
         }
     </style>
@@ -21,24 +22,24 @@
 
 <body>
 
-    <img src="../images/Capture.PNG" width="250px" alt="">
+    <img src="../images/Capture.PNG" width="250px" height="250px" alt="">
 
     <section>
         <h1>Calculate Ideal Weight</h1>
 
         <form>
             <p> Client Name:
-                <input type="text" id="clientName" required>
+                <input type="text" id="clientName">
             </p>
             <p> Gender:
-                <input type="radio" name="gender" id="rbMale" > Male
-                <input type="radio" name="gender" id="rbFemale" > Female
+                <input type="radio" name="gender" id="rbMale"> Male
+                <input type="radio" name="gender" id="rbFemale"> Female
             </p>
             <p> Height:
-                <input type="text" id="inHeight" required>
+                <input type="text" id="inHeight">
             </p>
             <input type="submit" value="Show Ideal Weight">
-            <input type="submit" value="Clear Data">
+            <input type="submit" onclick="clearInput()" value="Clear Data">
         </form>
         <h3 id="answer"></h3>
     </section>
@@ -54,8 +55,8 @@
         form.addEventListener("submit", (e) => {
             const name = form.clientName.value
             const height = Number(form.inHeight.value)
-            const male = rbMale.checked
-            const female = rbFemale.checked
+            const male = rbMale.checked // check if it is true or false
+            const female = rbFemale.checked // check if it is true or false
 
             //Verify if the gender and name was filled out
             if (name == "" || (male == false && female == false)) {
@@ -63,26 +64,44 @@
                 name.focus() // focus in the variable state
                 return
             }
-            //  if (height == 0 || isNaN(height)) {
-            //      alert("Please, infrom your name and gender correctly...")
-            //      height.focus()
-            //      return
-            //  }
-
-            if(male){
-                var weight = 22 * Math.pow(height,2) 
-            }else{
-                var weight = 21 * Math.pow(height,2)
+            //verify if the height was filled out
+            if (height == 0 || isNaN(height)) {
+                alert("Please, infrom your name and gender correctly...")
+                height.focus()
+                return
             }
 
+            if (male) {
+                var weight = 22 * Math.pow(height, 2)
+            } else {
+                var weight = 21 * Math.pow(height, 2)
+            }
 
             idealWeight.innerText = name + ":Your ideal weight is  " + weight.toFixed(3)
 
-            
+
 
             e.preventDefault()
         })
 
+
+        //---------Clean input
+
+        function clearInput() {
+            document.getElementById("clientName").value = ""
+            document.getElementById("rbMale").checked = false
+            document.getElementById("rbFemale").checked = false
+            document.getElementById("inHeight").value = ""
+            document.getElementById("answer").textContent = ""
+            //Element Position
+            //document.getElementById("clientName").focus()
+        }
+
+        //-----Other way to use would be-----
+        // function clearInput() {
+        //     location.reload()
+        //     document.getElementById("clientName").focus()
+        // }
 
     </script>
 </body>
