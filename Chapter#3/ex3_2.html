@@ -53,7 +53,7 @@
 
         form.addEventListener("submit", (e) => {
             const name = form.clientName.value
-            const height = Number(form.firstMark.value)
+            const height = Number(form.inHeight.value)
             const male = rbMale.checked
             const female = rbFemale.checked
 
@@ -63,11 +63,11 @@
                 name.focus() // focus in the variable state
                 return
             }
-            if (altura == 0 || isNaN(altura)) {
-                alert("Please, infrom your name and gender correctly...")
-                height.focus()
-                return
-            }
+            //  if (height == 0 || isNaN(height)) {
+            //      alert("Please, infrom your name and gender correctly...")
+            //      height.focus()
+            //      return
+            //  }
 
             if(male){
                 var weight = 22 * Math.pow(height,2) 
