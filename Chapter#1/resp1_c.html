@@ -11,12 +11,14 @@
 <body>
 
     <script>
-        var itemValue = Number(prompt("Item price: "))
-        var calculateInCash = itemValue * 0.10
-        var cash = itemValue - calculateInCash
-        var parcel = itemValue/3
+        const billPrice = Number(prompt('Insert bill`s price: '))
         
-        alert("In Cash is $" + cash.toFixed(2) + "\nParcel in 3 times: $" + parcel.toFixed(2))
+        const inCash = billPrice - (billPrice * 0.10)
+        const inDivide = billPrice/3
+
+        alert(`Payment in Cash: $${inCash.toFixed(2)} (10% discount)`)
+        
+        alert(`Payment divide per 3: $${inDivide.toFixed(2)} (paid in 3 mounths)`)
 
     </script>
 

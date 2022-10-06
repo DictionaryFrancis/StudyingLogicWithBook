@@ -11,11 +11,12 @@
 <body>
 
     <script>
-        var bill = Number(prompt("Total cost: "))
-        var numberCustomers = Number(prompt("Number of customers: "))
-        var sum = bill / numberCustomers
-        
-        alert("Cost per person is: $" + sum.toFixed(2))
+        const billPrice = Number(prompt('Bill`s price: '))
+        const numberOfPeople = Number(prompt('Number of people who will divide: '))
+
+        const result = billPrice / numberOfPeople
+
+        alert(`Price for each people is: $${result.toFixed(2)}`)
 
     </script>
 
