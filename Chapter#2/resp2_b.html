@@ -27,21 +27,19 @@
 
     <script>
 
-        const form = document.querySelector("form")
-        const pricePaid = document.getElementById("outPrice")
+        const form = document.querySelector('form')
+        const outPrice = document.querySelector('#outPrice')
 
+        form.addEventListener('submit', (e) => {
+            const inPrice = Number(form.inPrice.value)
+            const inTime = Number(form.inTime.value)
 
-        form.addEventListener("submit", (e) => {
-            const price = Number(form.inPrice.value)
-            const time = Number(form.inTime.value)
+            const sum = Math.ceil(inTime/15) * inPrice
 
-            const sum = Math.ceil(time/15)*price
-
-            pricePaid.innerText = "Total to be paid is $: " + sum.toFixed(2)
+            outPrice.textContent = `Price is $${sum.toFixed(2)}`
 
             e.preventDefault()
         })
-
 
     </script>
 </body>

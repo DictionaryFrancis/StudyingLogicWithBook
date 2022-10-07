@@ -32,8 +32,8 @@
 
         const form = document.querySelector('form')
         console.log("pasei")
-        const outMedicineName = document.querySelector('outMedicineName')
-        const outPromotion = document.querySelector('outPromotion')
+        const outMedicineName = document.querySelector('#outMedicineName')
+        const outPromotion = document.querySelector('#outPromotion')
 
         form.addEventListener('submit', (e) => {
         const inMedicine = form.inMedicine.value
@@ -44,7 +44,7 @@
         outMedicineName.innerHTML = `Item in promotion is ${inMedicine}`
         outPromotion.innerHTML = `Promotion take two and pay: $${result.toFixed(2)}`
         
-        e.preventDefault   
+        e.preventDefault()   
 
     })
 

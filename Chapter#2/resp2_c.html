@@ -28,24 +28,24 @@
 
     <script>
 
-        const form = document.querySelector("form")
-        const promotion = document.getElementById("outPromotion")
-        const price = document.getElementById("outPrice")
+        const form = document.querySelector('form')
+        
+        const promotion = document.querySelector('#outPromotion')
+        const  promotionPrice = document.querySelector('#outPrice')
 
-
-        form.addEventListener("submit", (e) => {
+        form.addEventListener('submit', (e)=>{
             const product = form.inItem.value
-            const productPrice = Number(form.inPrice.value)
+            const price = Number( form.inPrice.value)
 
-            const discount = productPrice * 0.50
-            const sum = (productPrice * 3) - discount
-            
-            promotion.innerText = product +" - Promotion 3 per $: " + sum.toFixed(2)
-            price.innerText = "The 3th product cost is $" + discount.toFixed(2)
+            const discount = (price * 0.50)
+            const sum = (price*3) - discount
+
+            promotion.textContent = `${product} - Promotion: Take 3 per $${sum.toFixed(2)}`
+            promotionPrice.textContent = `The Third product is only $${discount.toFixed(2)}`
 
             e.preventDefault()
-        })
 
+        })
 
     </script>
 </body>
