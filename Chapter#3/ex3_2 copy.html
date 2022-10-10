@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        img {
+            margin: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <img src="../images/Capture.PNG" width="250px" height="250px" alt="">
+
+    <section>
+        <h1>Calculate Ideal Weight</h1>
+
+        <form>
+            <p> Client Name:
+                <input type="text" id="clientName">
+            </p>
+            <p> Gender:
+                <input type="radio" name="gender" id="rbMale"> Male
+                <input type="radio" name="gender" id="rbFemale"> Female
+            </p>
+            <p> Height:
+                <input type="text" id="inHeight">
+            </p>
+            <input type="submit" value="Show Ideal Weight">
+            <input type="submit" onclick="clearInput()" value="Clear Data">
+        </form>
+        <h3 id="answer"></h3>
+    </section>
+
+    <script>
+
+        const form = document.querySelector('form')
+        const answer = document.querySelector('#answer')
+        const radioMale = document.getElementById('rbMale')
+        const radioFemale = document.getElementById('rbFemale')
+
+
+        form.addEventListener('submit', (e) => {
+            const userName = form.clientName.value
+            const height = Number(form.inHeight.value)
+            const male = form.rbMale.checked
+            const female = form.rbFemale.checked
+
+            if (userName === '' || (male == false && female == false)) {
+                alert('Inform your name, and gender...')
+                userName.focus()
+                return
+            }
+
+            if (height === 0 || (isNaN(height))) {
+                alert('Inform your height...')
+                height.focus()
+                return
+            }
+
+            if(male){
+                var weight = 22 * Math.pow(height, 2)
+            }else{
+                var weight = 21 * Math.pow(height,2)
+            }
+
+            answer.textContent = `${userName}: Your ideal weight is ${weight.toFixed(3)}`
+
+
+            e.preventDefault()
+
+        })
+        
+        function clearInput(){
+            location.reload()
+            userName.focus()
+        }
+
+
+    </script>
+</body>
+
+</html>
