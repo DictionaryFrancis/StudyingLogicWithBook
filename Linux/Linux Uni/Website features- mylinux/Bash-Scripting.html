@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bash Basics Lab - Step by Step</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 20px;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #444;
+        }
+        pre {
+            background: #222;
+            color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bash Basics Lab - Step by Step Guide 🚀</h1>
+    
+    <h2>Exercise 1: Basic Terminal Commands 🖥️</h2>
+    <p><strong>Create a directory:</strong></p>
+    <pre>mkdir SystemsScripting</pre>
+    <p><strong>Change into the directory:</strong></p>
+    <pre>cd SystemsScripting</pre>
+    <p><strong>Create another directory "lab01":</strong></p>
+    <pre>mkdir lab01 && cd lab01</pre>
+    <p><strong>Create two files 📄:</strong></p>
+    <pre>touch file1.txt file2.txt</pre>
+    <p><strong>Create two directories 📁📁:</strong></p>
+    <pre>mkdir folder1 folder2</pre>
+    <p><strong>List out directory content 📜:</strong></p>
+    <pre>ls -l</pre>
+    
+    <h2>Exercise 2: First Bash Script ✍️</h2>
+    <p><strong>Create a script file:</strong></p>
+    <pre>nano welcome_script.sh</pre>
+    <p><strong>Write script:</strong></p>
+    <pre>
+#!/bin/bash
+# This script prints a welcome message and lists the home directory.
+
+# Get the current username
+USER_NAME=$(whoami)
+
+# Display the welcome message
+echo "Welcome $USER_NAME to System Scripting Lab 1"
+
+# List the contents of the home directory
+ls ~
+    </pre>
+    <p><strong>Make it executable and run:</strong></p>
+    <pre>
+chmod +x welcome_script.sh
+./welcome_script.sh
+    </pre>
+    
+    <h2>Exercise 3: Create and Move Files 📂</h2>
+    <p><strong>Create a new script:</strong></p>
+    <pre>nano file_movement.sh</pre>
+    <p><strong>Write script:</strong></p>
+    <pre>
+#!/bin/bash
+# This script creates two directories, five files, moves three files, and prints folder contents.
+
+# Create two directories
+mkdir folderA folderB
+
+# Create five files in folderA
+touch folderA/file{1..5}.txt
+
+# Move three files from folderA to folderB
+mv folderA/file{1..3}.txt folderB/
+
+# Print the contents of both folders
+echo "Contents of folderA:"; ls folderA
+echo "Contents of folderB:"; ls folderB
+    </pre>
+    <p><strong>Run the script:</strong></p>
+    <pre>
+chmod +x file_movement.sh
+./file_movement.sh
+    </pre>
+    
+    <h2>Exercise 4: Using Globbing to Move Files 🌍</h2>
+    <p><strong>Modify previous script:</strong></p>
+    <pre>nano globbing_script.sh</pre>
+    <p><strong>Write script:</strong></p>
+    <pre>
+#!/bin/bash
+# This script moves all files from one folder to another using globbing.
+
+# Create directories
+mkdir folderX folderY
+
+# Create five files in folderX
+touch folderX/file{1..5}.txt
+
+# Move all files at once using globbing
+mv folderX/* folderY/
+
+# Rename folderY
+mv folderY renamed_folder
+
+# Change into the renamed folder
+cd renamed_folder
+
+# Grant read and execute permissions to the group
+chmod g+rx *
+
+# Print the folder contents
+ls -l
+    </pre>
+    <p><strong>Run the script:</strong></p>
+    <pre>
+chmod +x globbing_script.sh
+./globbing_script.sh
+    </pre>
+    
+    <h2>Exercise 5: Interactive File Move Script 🖱️</h2>
+    <p><strong>Create the script:</strong></p>
+    <pre>nano interactive_move.sh</pre>
+    <p><strong>Write script:</strong></p>
+    <pre>
+#!/bin/bash
+# This script moves a file to another folder and asks for confirmation before overwriting.
+
+# Prompt user for file name
+read -p "Enter the file name to move: " file_name
+
+# Prompt user for destination folder
+read -p "Enter the destination folder path: " dest_folder
+
+# Check if file exists
+if [ ! -f "$file_name" ]; then echo "Error: File does not exist!"; exit 1; fi
+
+# Check if destination folder exists
+if [ ! -d "$dest_folder" ]; then echo "Error: Destination folder does not exist!"; exit 1; fi
+
+# Check if file with same name exists in destination
+if [ -f "$dest_folder/$file_name" ]; then
+    read -p "A file with the same name exists. Overwrite? (y/n): " confirmation
+    if [ "$confirmation" != "y" ]; then echo "Operation canceled."; exit 0; fi
+fi
+
+# Move the file
+mv "$file_name" "$dest_folder/"
+
+echo "File moved successfully!"
+    </pre>
+    <p><strong>Run the script:</strong></p>
+    <pre>
+chmod +x interactive_move.sh
+./interactive_move.sh
+    </pre>
+    
+    <p><strong>End of Guide 🎉</strong></p>
+</body>
+</html>

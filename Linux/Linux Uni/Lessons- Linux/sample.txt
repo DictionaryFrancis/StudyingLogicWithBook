@@ -1,0 +1,55 @@
+Explore the Terminal and use some basic
+commands
+1. Open a terminal.
+2. Type pwd What does it do?
+3. Type ls What does it do?
+4. Try ls –l What does it do?
+Directories & Files
+Command line “directory”
+è File manager “folder”.
+Explore your files & directories with the cd command. Type pwd and ls, each time after you use
+the cd command.
+5. Try cd .. What does it do?
+6. Try cd ~ What does it do?
+7. Make a few folders and files using the desktop file manager and text editor.
+Can you find these files using cd and ls commands?
+8. To display the contents of a file, type cat <filename>
+9. To see the virtual memory swap file called swapfile in the root directory, type ls –l /
+10. To see disk information, type sudo fdisk –l
+
+Exercise 1 - Type the following and explain what is happening?
+Using the terminal: Type the following:
+1. cd ~
+2. pwd ß pwd shows you the new directory you changed to.
+3. ls ß What does cd ~ do?
+4. ls -l
+5. cd ..
+6. pwd
+7. ls ß What does cd .. do?
+8. cd /usr/games
+9. pwd
+10. ls ß What does cd /usr/games do?
+11. ß Now run a game by typing its name.
+Exercise 2 - Type the following and explain what is happening?
+Using the terminal: Type the following:
+1. cd /etc ß Remember: the pwd command can be used to check the
+current directory.
+2. pwd
+3. ls à Notice the file called “timezone”
+4. cat timezone à Display the file-contents.
+Exercise 3 - Type the following and explain what is happening?
+Using the terminal: Type the following:
+1. cd ~ à Go to your home directory
+2. pwd
+3. ls -l à Notice the files and directories.
+A directory has the attributes starting with the letter d;
+files normally start with -
+4. ls à Notice the files and directories.
+What colour are the names of directories?
+What colour are the names of files?
+5. cd Desktop à Change to the desktop directory.
+6. pwd
+7. ls à List the contents of the directory.
+8. cd .. à Go back to the previous (parent) directory.
+9. pwd
+10. ls à List the contents of the directory
