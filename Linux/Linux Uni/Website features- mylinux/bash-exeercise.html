@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bash Scripting - Concepts & Exercises</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bash Scripting - Concepts & Exercises</h1>
+    
+    <h2>1. Introduction to Variables</h2>
+    <p>Bash scripting supports two types of variables:</p>
+    <ul>
+        <li><strong>Local Variables:</strong> Set and used within the script.</li>
+        <li><strong>Environment Variables:</strong> Set by the system and available to all processes.</li>
+    </ul>
+
+    <h3>Example:</h3>
+    <pre><code>#!/bin/bash
+STR="Hello World!"
+echo $STR</code></pre>
+
+    <h2>2. File & Directory Management</h2>
+    <p>Some useful file commands:</p>
+    <ul>
+        <li><code>ls</code> - List directory contents</li>
+        <li><code>mkdir mydir</code> - Create a directory</li>
+        <li><code>rm myfile.txt</code> - Delete a file</li>
+        <li><code>mv oldname newname</code> - Rename a file</li>
+    </ul>
+
+    <h2>3. Pipes & Redirection</h2>
+    <p>Redirection allows output to be stored in files or passed between commands.</p>
+    <ul>
+        <li><code>ls > files.txt</code> - Save output to a file</li>
+        <li><code>cat file1.txt | wc -l</code> - Count lines in a file</li>
+    </ul>
+
+    <h2>4. Grep & Regular Expressions</h2>
+    <p>The <code>grep</code> command allows searching through files using patterns.</p>
+    <pre><code>grep "error" logfile.txt</code></pre>
+
+    <h2>Exercises</h2>
+    <h3>Exercise 1: Create and Use a Variable</h3>
+    <p>Write a script that stores your name in a variable and prints it.</p>
+    <h4>Solution:</h4>
+    <pre><code>#!/bin/bash
+NAME="Francis"
+echo "Hello, my name is $NAME"</code></pre>
+
+    <h3>Exercise 2: Count Number of Files in a Directory</h3>
+    <p>Use a command to count the number of files in the current directory.</p>
+    <h4>Solution:</h4>
+    <pre><code>ls | wc -l</code></pre>
+
+    <h3>Exercise 3: Find Lines Starting with a Specific Letter</h3>
+    <p>Search a file for lines that start with the letter 'A'.</p>
+    <h4>Solution:</h4>
+    <pre><code>grep "^A" myfile.txt</code></pre>
+</body>
+</html>
