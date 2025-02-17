@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Log Processing Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        code { background: #f4f4f4; padding: 5px; border-radius: 5px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        h1, h2, h3 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Linux Log Processing Guide</h1>
+    
+    <h2>1. Filtering and Processing Log Files</h2>
+    <p>When processing logs, there may be unnecessary files in the directory. We need to filter only those that matter.</p>
+    
+    <h3>Filtering Log Files</h3>
+    <pre><code>find . -name "*.log"</code></pre>
+    
+    <h3>Integrating into a Monitoring Script</h3>
+    <pre><code>#!/bin/bash
+LOG_DIR="../myapp/logs"
+
+echo "Checking logs in directory $LOG_DIR"
+
+find $LOG_DIR -name "*.log"</code></pre>
+    
+    <h2>2. Iterating Over the Found Files</h2>
+    <h3>Using a While Loop</h3>
+    <pre><code>find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' file; do
+    echo "Found file: $file"
+done</code></pre>
+    
+    <h2>3. Filtering Error Messages</h2>
+    <h3>Extracting Only Errors</h3>
+    <pre><code>grep "ERROR" myapp-backend.log</code></pre>
+    
+    <h3>Saving Errors to a New File</h3>
+    <pre><code>grep "ERROR" myapp-backend.log > logs-errors.log</code></pre>
+    
+    <h2>4. Adding Filtering to the Script</h2>
+    <pre><code>#!/bin/bash
+LOG_DIR="../myapp/logs"
+
+echo "Checking logs in directory $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' file; do
+    grep "ERROR" "$file" > "${file}.filtered"
+done</code></pre>
+    
+    <h2>5. Capturing Sensitive Information</h2>
+    <h3>Finding Sensitive Data</h3>
+    <pre><code>grep "SENSITIVE_DATA" myapp-backend.log</code></pre>
+    
+    <h3>Adding Sensitive Data Filtering to the Script</h3>
+    <pre><code>find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' file; do
+    grep "ERROR" "$file" > "${file}.filtered"
+    grep "SENSITIVE_DATA" "$file" >> "${file}.filtered"
+done</code></pre>
+    
+    <h2>6. Hiding Sensitive Data</h2>
+    <h3>Masking Passwords and API Keys</h3>
+    <pre><code>sed -i 's/User password is .*/User password is REDACTED/g' myapp-backend.log</code></pre>
+    
+    <h3>Updating the Script to Redact Sensitive Data</h3>
+    <pre><code>find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' file; do
+    grep "ERROR" "$file" > "${file}.filtered"
+    grep "SENSITIVE_DATA" "$file" >> "${file}.filtered"
+
+    sed -i 's/User password is .*/User password is REDACTED/g' "${file}.filtered"
+    sed -i 's/API key leaked: .*/API key leaked: REDACTED/g' "${file}.filtered"
+    sed -i 's/User credit card last four digits: .*/User credit card last four digits: REDACTED/g' "${file}.filtered"
+done</code></pre>
+    
+    <h2>Conclusion</h2>
+    <p>Now, the script:</p>
+    <ul>
+        <li>Filters and processes log files</li>
+        <li>Extracts error messages</li>
+        <li>Detects and redacts sensitive data</li>
+    </ul>
+    <p>Next, we can enhance it with automated alerts and remote server integration! 🚀</p>
+</body>
+</html>

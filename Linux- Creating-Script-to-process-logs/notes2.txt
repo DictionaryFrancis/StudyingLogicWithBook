@@ -1,0 +1,326 @@
+Part 1
+
+Estamos trabalhando no nosso script de processamento de logs e temos uma variável que armazena o diretório onde estão os nossos logs.
+
+Pode ser que dentro desse diretório existam outros arquivos que não queremos utilizar nesse processamento, pois não são arquivos de log. Então, vamos verificar o que temos dentro da pasta.
+
+Encontrando e filtrando arquivos
+No terminal, vamos acessar a pasta "/myapp/logs" e executar o comando ls para listar os itens da pasta. Temos alguns arquivos com a extensão .log, mas também há outros com extensões diferentes que não queremos processar.
+
+É interessante criar um filtro para processar somente os arquivos myapp-backend.log e myapp-frontend.log, que contêm as informações de log da nossa aplicação.
+
+Para fazer esse filtro e obter somente os nomes dos arquivos que nos interessam, podemos usar o comando find no Linux. Vamos digitar:
+
+find . -name "*.log"
+Copiar código
+O retorno será:
+
+./myapp-frontend.log
+
+./myapp/backend.log
+
+Esse comando retorna somente os nomes dos arquivos que terminam com .log. A seguir, vamos entender mais a fundo o que cada parte do comando faz.
+
+O find realiza uma busca. O ponto especifica que a busca deve ser feita a partir do diretório atual. Caso queiramos buscar em outro diretório, podemos especificar o caminho no lugar do ponto.
+
+A opção -name permite especificar o padrão de busca, no caso, o nome. Entre as aspas duplas, utilizamos o caractere especial de asterisco, que representa qualquer cadeia de caracteres em uma string. Assim, qualquer texto que termine com ".log" será retornado.
+
+Portanto, esse comando filtra apenas os arquivo de log e podemos utilizá-lo no nosso script de monitoramento. Vamos copiar o comando com "Ctrl + Shift + C", sair da pasta com cd e entrar na pasta do script com cd scripts-linux. Para abrir o script, digitamos vim monitoramento-logs.sh.
+
+Incrementando o script de monitoramento
+No script, vamos habilitar a edição pressionando a tecla "I". Após o echo, pularemos uma linha e colaremos o comando copiado com "Ctrl + Shift + V":
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find . -name "*.log"
+Copiar código
+Faremos algumas alterações no comando. Em vez de usar o ponto, chamaremos a variável LOG_DIR para utilizar o caminho do diretório onde estão armazenados os logs:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log"
+Copiar código
+Agora, podemos usar os nomes dos arquivos filtrados para percorrer cada um deles e fazer o devido processamento dos logs.
+
+Laços de repetição
+Para percorrer o conteúdo, utilizamos laços de repetição. Basta especificar uma condição e, enquanto ela for verdadeira, executamos uma ação dentro do laço.
+
+Para redirecionar a saída do comando find para um laço de repetição, usamos o operador pipe, que é uma barra vertical. O laço de repetição que utilizaremos é o while. Antes de especificar as condições e as ações do laço, vamos entender sua estrutura.
+
+Começamos escrevendo while, que significa "enquanto" em inglês. Em seguida, definimos a condição e um ponto e vírgula. Depois, escrevemos do, que significa "faça" em inglês. O próximo passo é inserir as ações. Por fim, usamos a palavra done, que significa "feito" em inglês. Ou seja, todas as ações já foram feitas:
+
+find $LOG_DIR -name "*.log" | while [condição]; do
+    [ações]
+done
+Copiar código
+Os trechos entre colchetes serão substituídos a seguir.
+
+Na sequência, vamos especificamos a condição e as ações a serem realizadas. Para a condição, usaremos o IFS= (Internal Field Separator) definido como vazio, para evitar que nomes de arquivos com espaços ou caracteres especiais sejam quebrados:
+
+find $LOG_DIR -name "*.log" | while IFS= ; do
+    ações
+done
+Copiar código
+Em seguida, usamos read para ler os arquivos passados pelo find, com algumas opções extras. A opção -r impede a interpretação caracteres especiais e -d '' indica que delimitador é o caractere nulo:
+
+find $LOG_DIR -name "*.log" | while IFS= read -r -d ''; do
+    ações
+done
+Copiar código
+Por padrão, o find não utiliza o delimitador nulo. Para alterar essa configuração, vamos inserir -print0 antes do pipe, garantindo que a saída do find utilize o delimitador nulo, que é esperado pelo read:
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d ''; do
+    ações
+done
+Copiar código
+Por fim, especificaremos uma variável arquivo para armazenar o nome dos arquivos de log. Assim, conseguiremos trabalhar com cada um deles individualmente:
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    ações
+done
+Copiar código
+Para verificar se o laço está funcionando, vamos incluir uma ação nele. Chamaremos echo "Arquivo encontrado $arquivo":
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    echo "Arquivo encontrado $arquivo"
+done
+Copiar código
+Vamos sair do modo de inserção com "Esc". Para salvar e sair do Vim, em vez de usar os comandos :w e :q individualmente, podemos concatená-los assim: :wq.
+
+Para executar o script, rodamos:
+
+./monitoramento-logs.sh
+Copiar código
+No terminal, temos a seguinte a saída:
+
+Verificando logs no diretorio ../myapp/logs
+
+Arquivo encontrado: ../myapp/logs/myapp-frontend.log
+
+Arquivo encontrado: ../myapp/logs/myapp-backend.log
+
+O laço de repetição e o comando find estão encontrando os arquivos, o que nos permitirá realizar o processamento na aula a seguir.
+
+
+-----------------------
+Part 2
+Nós aprendemos como utilizar o laço de repetição para capturar o nome dos nossos arquivos que terminam com a extensão .log, juntamente do comando find. Agora podemos, de fato, processar os nossos logs.
+
+Vamos entrar na pasta onde estão esses arquivos de log, digitando cd myapp/logs no terminal. Agora, usaremos o comando cat em um desses arquivos para analisar seu conteúdo:
+
+cat myapp-backend.log
+Copiar código
+Temos uma série de informações e nem todas são relevantes para realizar uma futura análise desses logs. O que queremos são as mensagens importantes, por exemplo, mensagens de erro que mostram que a nossa aplicação teve algum tipo de problema.
+
+Note quem toda vez que houve um erro nos logs, temos a palavra "ERROR". Podemos criar um filtro para capturar somente as linhas que contêm essa palavra.
+
+Filtrando logs
+No Linux, o comando grep filtra o conteúdo de um arquivo conforme o padrão de texto que especificarmos. No caso, estamos buscando a palavra "ERROR" escrita toda em maiúsculas no arquivo myapp-backend.log. Logo, nosso comando ficará assim:
+
+grep "ERROR" myapp-backend.log
+Copiar código
+Ao executar o comando, o retorno do grep traz somente as mensagens que contêm "ERROR". Inclusive, essa palavra fica destacada na cor vermelha.
+
+Agora que aprendemos a fazer esse filtro, é interessante redirecionar a saída e salvar apenas esses logs de erro em algum outro arquivo.
+
+Salvando em outro arquivo
+Ao clicar na seta para cima no terminal, voltamos ao comando anterior. No caso, grep "ERROR" myapp-backend.log. Em seguida, podemos utilizar o operador de redirecionamento > (maior que). Isso fará com que a saída do comando seja redirecionada para algum arquivo que especificarmos, por exemplo, logs-erro:
+
+grep "ERROR" myapp-backend.log > logs-erro
+Copiar código
+Ao pressionar "Enter", o grep não trará mais a saída no terminal. No entanto, ao executar um ls na pasta, notaremos que o arquivo logs-erro foi criado. Vamos checar seu conteúdo:
+
+cat logs-erro
+Copiar código
+Esse arquivo contém as mensagens de erro do nosso log, que foram filtradas pelo grep. Portanto, podemos utilizar esse filtro no nosso script para começar o processamento. Vamos copiá-lo com "Ctrl + Shift + C".
+
+Incrementando o script de monitoramento
+Vamos digitar cd para sair da pasta, depois cd scripts-linux/ para entrar na pasta do script e vim monitoramento-logs.sh para abrir o arquivo. Por fim, habilitaremos a edição do arquivo, clicando na tecla "I".
+
+Dentro do nosso laço de repetição, apagaremos a linha que tem o echo, pois esse comando servia apenas para verificar se o laço estava funcionando. No mesmo lugar, colaremos o comando copiado:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" myapp-backend.log > logs-erro
+done
+Copiar código
+Vamos fazer algumas modificações para que o nosso script fique mais legível e funcione corretamente conforme o nome dos arquivos que o while está trazendo.
+
+No comando grep, vamos substituir o nome do arquivo pela variável arquivo, que está guardando o nome dos nossos arquivos:
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > logs-erro
+done
+Copiar código
+Assim, o sistema traz de forma mais dinâmica o nome do arquivo.
+
+Além disso, não vamos mais redirecionar para logs-erro. Em vez disso, criaremos um arquivo que tenha o nome do arquivo original de logs. Usaremos as aspas duplas (uma boa prática para evitar erros devido a espaços no nome) e chamaremos a variável $arquivo. Queremos que o final do nome desse arquivo seja .filtrado, para especificar que dentro teremos os logs filtrados:
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "$arquivo.filtrado"
+done
+Copiar código
+Precisamos colocar a palavra "arquivo" dentro de chaves, assim: ${arquivo}.filtrado. Do contrário, o script poderia interpretar que o nome da variável é $arquivo.filtrado e isso causaria problemas. Com o uso de chaves, especificamos que a variável é somente o que está dentro das chaves, isto é, arquivo:
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "${arquivo}.filtrado"
+done
+Copiar código
+Feitas essas alterações, podemos salvar o nosso script e sair do editor. Pressionaremos "Esc" e digitaremos :wq.
+
+Ao executar o script com ./monitoramento-logs.sh, o retorno será apenas a mensagem de verificação. Agora, vamos sair da pasta dos scripts com cd e entrar na pasta com os arquivos de log com cd myapp/logs.
+
+Rodando o comando ls, notaremos que foram criados novos arquivos:
+
+myapp.log.filtrado
+myapp.frontend.log.filtrado
+Esses arquivos contêm somente as mensagens de erro. Podemos verificar com um cat em um desses arquivos:
+
+cat myapp-backend.log
+Copiar código
+Dentro desse arquivo, temos somente as mensagens de logs que são relevantes para a nossa análise.
+
+Na sequência, continuaremos esse processamento. Além das mensagens de erro, podemos notar que também existem informações sensíveis (sensitive data), que nem sempre estarão atreladas a uma mensagem de erro. É relevante manter no radar essas mensagens. Estudaremos como podemos filtrar esses dados e processá-los.
+
+--------------------------------
+Part 3
+
+Nós criamos um filtro em nosso script que captura as mensagens dos logs que contêm erro. No entanto, também temos outros logs de diferentes tipos interessantes para incluir no arquivo de logs filtrados.
+
+Informações sensíveis
+No terminal, vamos entrar na pasta dos logs com o comando cd myapp/logs e executar cat myapp-backend.log para analisar o conteúdo desse arquivo.
+
+Além das mensagens de erro com o termo "ERROR", encontramos a palavra "SENSITIVE_DATA" (dados sensíveis). Nem sempre os logs com informações sensíveis estão associados a um erro. Há linhas que começam com "INFO" e mencionam dados sensíveis também. É importante monitorar e processar esses dados para garantir a segurança da aplicação.
+
+A primeira mensagem sobre dados sensíveis diz o seguinte:
+
+INFO: SENSITIVE_DATA: User password is 12345.
+
+Ou seja, ela revela que a senha do usuário é "12345". Não queremos manter essa informação no arquivo de logs filtrados, por questões de segurança, sendo necessário ocultá-la.
+
+Examinando mais mensagens, também encontramos informações sobre chaves de API e números de cartão de crédito, que devem ser ocultadas no arquivo de logs filtrados.
+
+Vamos sair da pasta atual com o comando cd e entrar na pasta de scripts com cd scripts-linux/. Em seguida, abriremos o script:
+
+vim monitoramento-logs.sh
+Copiar código
+Após habilitar a edição pressionando a tecla "I", vamos duplicar o comando grep que está dentro do while, substituindo "ERROR" por "SENSITIVE_DATA":
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "${arquivo}.filtrado"
+    grep "SENSITIVE_DATA" $arquivo > "${arquivo}.filtrado"
+done
+Copiar código
+Outra alteração necessária é no operador de redirecionamento >, porque ele sobrescreve informações. Em outras palavras, ao redirecionar a saída do grep, o conteúdo existente no arquivo .filtrado será substituído. Queremos apenas adicionar informações de dados sensíveis, então utilizaremos ">>", que adiciona o conteúdo ao final do arquivo, preservando o que já existe:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "${arquivo}.filtrado"
+    grep "SENSITIVE_DATA" $arquivo >> "${arquivo}.filtrado"
+done
+Copiar código
+Dessa maneira, conseguimos passar as informações sensíveis para o arquivo de logs filtrados, mas ainda não estamos ocultando essas informações.
+
+Ocultando dados com sed
+Vamos salvar o script com :wq e ir até a pasta dos logs novamente. Utilizaremos o comando sed para substituir informações sensíveis pela palavra "redacted", que é comumente usada para ocultar informações sensíveis.
+
+O comando sed é utilizado da seguinte forma:
+
+sed 's/User password is .*/User password is REDACTED/g' myapp-backend.log
+Copiar código
+Começamos digitando sed e, entre aspas simples, especificamos o que o comanda deve fazer. Primeiramente, para informar que queremos fazer uma substituição, inserimos a letra "s".
+
+Em seguida, indicamos qual é o termo a ser procurado no arquivo. No caso, "User password is". Como a senha pode ter valores diferentes, colocaremos um ponto para especificar que o sed pode buscar qualquer caractere e um asterisco para especificar que pode ser um ou mais caracteres.
+
+Na sequência, incluímos o texto que substituirá esse termo: "User password is REDACTED". Essa é a indicação de que estamos ocultando dados sensíveis.
+
+A opção "g" indica que a substituição deve ser feita globalmente na linha. Do contrário, se o texto aparecesse mais de uma vez na mesma linha, apenas a primeira aparição seria substituída.
+
+Por fim, fora das aspas simples, indicamos o arquivo. Vamos pressionar "Enter" para executar o comando. Agora, a saída terá linhas como:
+
+INFO: SENSITIVE_DATA: User password is REDACTED
+
+No entanto, esse comando não altera o arquivo diretamente, apenas a saída. Para comprovar isso, podemos rodar cat myapp-backend.log e notar que a senha ainda aparece.
+
+Para corrigir isso, adicionaremos a opção -i no comando, logo após a palavra sed, indicando que a alteração deve ser feita diretamente no arquivo:
+
+sed -i 's/User password is .*/User password is REDACTED/g' myapp-backend.log
+Copiar código
+Agora, podemos incluir esse comando no nosso script monitoramento-logs.sh, dentro do laço:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "${arquivo}.filtrado"
+    grep "SENSITIVE_DATA" $arquivo >> "${arquivo}.filtrado"
+
+    sed -i 's/User password is .*/User password is REDACTED/g' myapp-backend.log
+done
+Copiar código
+Vamos trocar o arquivo myapp-backend.log para a variável ${arquivo}.filtrado. Assim, a alteração será feita diretamente no arquivo que queremos:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" $arquivo > "${arquivo}.filtrado"
+    grep "SENSITIVE_DATA" $arquivo >> "${arquivo}.filtrado"
+
+    sed -i 's/User password is .*/User password is REDACTED/g' "${arquivo}.filtrado"
+done
+Copiar código
+Além disso, existem outras linhas com textos sensíveis que queremos ocultar, como tokens, chaves API e números de cartões de crédito. Logo, vamos adicionar outros comandos sed para ocultar esses dados também:
+
+#!/bin/bash
+
+LOG_DIR="../myapp/logs"
+
+echo "Verificando logs no diretorio $LOG_DIR"
+
+find $LOG_DIR -name "*.log" -print0 | while IFS= read -r -d '' arquivo; do
+    grep "ERROR" "$arquivo" > "${arquivo}.filtrado"
+    grep "SENSITIVE_DATA" "$arquivo" >> "${arquivo}.filtrado"
+
+    sed -i 's/User password is .*/User password is REDACTED/g' "${arquivo}.filtrado"
+    sed -i 's/User password reset request with token .*/User password reset request with token REDACTED/g' "${arquivo}.filtrado"
+    sed -i 's/API key leaked: .*/API key leaked: REDACTED/g' "${arquivo}.filtrado"
+    sed -i 's/User credit card last four digits: .*/User credit card last four digits: REDACTED/g' "${arquivo}.filtrado"
+    sed -i 's/User session initiated with token: .*/User session initiated with token: REDACTED/g' "${arquivo}.filtrado"
+done
+Copiar código
+Após adicionar o novo trecho de código, podemos salvar o script com :wq e executá-lo com ./monitoramento logs.sh. Depois, voltar à pasta dos logs, vamos verificar o arquivo filtrado com:
+
+cat myapp-backend.log.filtrado
+Copiar código
+Agora, além de capturar as mensagens de erro, o script também captura informações sensíveis, substituindo-as pela palavra "redacted". Nosso script está evoluindo com essas modificações. Continuaremos processando os logs nas próximas etapas.

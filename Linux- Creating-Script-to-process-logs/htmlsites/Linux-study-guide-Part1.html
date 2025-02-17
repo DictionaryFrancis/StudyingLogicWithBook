@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux Study Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        code { background: #f4f4f4; padding: 5px; border-radius: 5px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        h1, h2, h3 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Linux Study Guide</h1>
+    <h2>1. Log Processing and Script Creation in Linux</h2>
+    <p>Log files store records of events, errors, and activities in an application. Monitoring logs helps identify issues.</p>
+    
+    <h3>Creating a Log Monitoring Script</h3>
+    <pre><code>mkdir scripts-linux
+cd scripts-linux</code></pre>
+    
+    <h3>Creating a Script File using Vim</h3>
+    <pre><code>vim log-monitoring.sh</code></pre>
+    
+    <h3>Basic Script Structure</h3>
+    <pre><code>#!/bin/bash
+LOG_DIR="../myapp/logs"
+echo "Checking logs in directory $LOG_DIR"</code></pre>
+    
+    <h3>Save and Exit Vim</h3>
+    <p>Press <code>Esc</code>, type <code>:wq</code>, and hit <code>Enter</code>.</p>
+    
+    <h2>2. Managing Permissions in Linux</h2>
+    <h3>Grant Execution Permission</h3>
+    <pre><code>chmod 755 log-monitoring.sh</code></pre>
+    
+    <h3>Octal Notation Explanation</h3>
+    <ul>
+        <li><strong>7</strong> (User): Read (4) + Write (2) + Execute (1) = <code>rwx</code></li>
+        <li><strong>5</strong> (Group): Read (4) + Execute (1) = <code>r-x</code></li>
+        <li><strong>5</strong> (Others): Read (4) + Execute (1) = <code>r-x</code></li>
+    </ul>
+    
+    <h3>Symbolic Notation Example</h3>
+    <pre><code>chmod u=rwx,g=rx,o=rx log-monitoring.sh</code></pre>
+    
+    <h3>Check File Permissions</h3>
+    <pre><code>ls -l</code></pre>
+    
+    <h3>Running the Script</h3>
+    <pre><code>./log-monitoring.sh</code></pre>
+    
+    <h2>3. User and Group Management in Linux</h2>
+    <h3>Create a New User</h3>
+    <pre><code>sudo adduser julia</code></pre>
+    
+    <h3>Create a Group and Add Users</h3>
+    <pre><code>sudo groupadd devs
+sudo usermod -aG devs julia</code></pre>
+    
+    <h3>Verify User Groups</h3>
+    <pre><code>groups julia</code></pre>
+    
+    <h3>Verify Group Creation</h3>
+    <pre><code>getent group devs</code></pre>
+    
+    <h2>4. Adjusting Directory Permissions</h2>
+    <h3>Change Group Ownership of a Directory</h3>
+    <pre><code>sudo chown -R :devs /home/user/scripts-linux</code></pre>
+    
+    <h3>Check Directory Permissions</h3>
+    <pre><code>ls -ld /home/user/scripts-linux</code></pre>
+    
+    <h3>Switch to Julia's Account and Execute the Script</h3>
+    <pre><code>su - julia
+cd /home/user/scripts-linux
+./log-monitoring.sh</code></pre>
+    
+    <h2>Conclusion</h2>
+    <p>Now you have a good understanding of:</p>
+    <ul>
+        <li>Creating and executing Bash scripts in Linux</li>
+        <li>Configuring permissions correctly with <code>chmod</code></li>
+        <li>Creating and managing users and groups</li>
+        <li>Adjusting file and directory permissions for collaboration</li>
+    </ul>
+    <p>Next steps could include adding automatic log analysis and alerts to your script. 🚀</p>
+</body>
+</html>

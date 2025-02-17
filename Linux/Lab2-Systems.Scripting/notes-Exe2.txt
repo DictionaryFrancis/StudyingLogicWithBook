@@ -1,0 +1,38 @@
+Doing the Lab 2 Exercises
+
+Exercise 2: 
+Write a script that prints out on the terminal its name, the number of arguments it is called with 
+and the names of those arguments. Try executing this script with varying number of arguments. 
+Remember to comment your code.
+
+It helps us understanding how scripts handle command-line arguments
+
+#!/bin/bash
+
+# Print the script name
+echo "Script Name: $0"
+
+# Print the number of arguments passed
+echo "Number of Arguments: $#"
+
+# Print the list of arguments
+echo "Arguments Passed: $@"
+
+$0 -> Refers to the name of the script
+$# -> Gives the number of arguments passed
+$@ -> List all arguments passed to the script
+
+
+So for example  I insert the code to execute the file
+
+chmod 755 [filename]
+
+and execute it with the arguments to test
+
+For example:
+./filename Hey hello Francis
+
+OUTPUT_FILE:
+Script name: ./exercise2
+Number of arguments: 3
+Arguments Passed: Hey hello Francis

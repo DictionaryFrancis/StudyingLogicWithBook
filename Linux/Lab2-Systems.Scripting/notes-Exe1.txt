@@ -1,0 +1,79 @@
+Doing the Lab 2 Exercises
+
+Learning steps by steps to do the Script to print the environment variables
+
+The exercise:
+Exercise 1:
+Write a script that prints out the environment variables on the terminal as well as save them in
+a file. The script should go on and count the number of entries in the file and print out the result
+on the terminal. Use comments to document every step in your script.
+
+The script:
+#!/bin/bash
+
+# Define the output file name
+OUTPUT_FILE="env_variables.txt"
+
+# Print all environment variables to the terminal
+echo "Listing all environment variables:"
+printenv
+
+# Save the environment variables to a file
+printenv > "$OUTPUT_FILE"
+
+# Count the number of entries (lines) in the file
+ENTRY_COUNT=$(wc -l < "$OUTPUT_FILE")
+
+# Print the count of entries in the file
+echo "The number of environment variables saved in $OUTPUT_FILE is: $ENTRY_COUNT"
+
+to execute the script:
+We go to the file and
+chmod 755 [name of the file]
+
+and execute
+./[name of the file]
+
+Main points to understand the exercise:
+1.OUTPUT_FILE="env_variables.txt" → Defines a variable to store the output filename.
+2.printenv → Prints all environment variables to the terminal.
+3.printenv > "$OUTPUT_FILE" → Saves the environment variables to a file.
+4.wc -l < "$OUTPUT_FILE" → Counts the number of lines in the file.
+5.echo "The number of environment variables saved in $OUTPUT_FILE is: $ENTRY_COUNT" → Displays the total number of environment variables.
+
+The command wc -l is used to count the number of lines in a file.
+
+Breakdown:
+wc stands for word count, but it can also count lines (-l), words (-w), characters (-m), and bytes (-c).
+The -l flag specifically tells wc to count the number of lines in the given file.
+
+example, if we use only like that:
+wc -l [name of the file]
+
+it shows us something like that:
+42 [name of the file]
+This means the file [name of the file] has 42 lines
+
+'>' (Output Redirection)
+Redirects the output of a command into a file
+For example:
+echo "Hey" > myfile.txt
+
+This writes "Hey" to myfile.txt
+
+For example:
+ls > myfile.txt
+
+This save the output of ls into files.txt, so it will show the ls of the directory that you used the ls
+
+'>>'(Overwriting)
+So this one instead of rewrite on top of the file, it will overwrite, so if we use in the file.txt, it will add a line, not erase the document
+
+For example:
+echo "Another Line" >> myfile.txt
+
+'<' (Input Redirection)
+In this case we will use the file as a input from the command, so it will be like 'How many lines in this file'.
+
+For example:
+wc -l myfile.txt

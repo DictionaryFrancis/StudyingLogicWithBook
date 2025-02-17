@@ -1,0 +1,339 @@
+Part 1
+
+Nós temos os arquivos de log de uma aplicação, que trazem registros importantes sobre atividades, erros e eventos que ocorrem dentro da nossa aplicação.
+
+Esses arquivos foram disponibilizados na atividade de preparação do ambiente, com o passo a passo de como baixá-los e salvá-los no diretório correto em nosso computador.
+
+Processamento de logs
+Como os arquivos de log contêm informações relevantes sobre o estado e a saúde da aplicação, é interessante monitorá-los. No Linux, existem comandos úteis para processar esses logs, extraindo informações como erros e dados sensíveis que possam ter vazado, permitindo solucionar problemas na aplicação.
+
+Esse processamento de logs segue uma série de instruções e comandos repetitivos. Em vez de digitar esses comandos manualmente no terminal toda vez que quisermos processar um arquivo de log, podemos consumir essas instruções de forma automática.
+
+No Linux, há um recurso interessante para isso: os scripts. Vamos criar um script para monitorar nossos logs.
+
+Criando um script
+Com o terminal do WSL aberto, primeiramente, criaremos uma pasta para armazenar nosso script. Executamos o seguinte comando:
+
+mkdir scripts-linux
+Copiar código
+Em seguida, vamos entra na pasta, com o seguinte comando:
+
+cd scripts-linux
+Copiar código
+Precisamos de um editor de texto para criar o script.
+
+No curso anterior, aprendemos a usar o Nano no Linux, mas ele não é a única opção disponível. É interessante conhecer diversos editores de texto, pois cada um possui recursos diferentes, pontos positivos e negativos dependendo da situação.
+
+Caso não haja um motivo específico para usar determinado editor, podemos escolher de acordo com nossas preferências. Neste curso, utilizaremos o Vim, outro editor de texto disponível nos sistemas Linux.
+
+Para criar um arquivo e nosso script com o Vim, digitamos no terminal o comando vim seguido do nome do arquivo, que será nosso script. A .sh indicará que se trata de um script Bash, um script de Shell do Linux:
+
+vim monitoramento-logs.sh
+Copiar código
+Para abrir o editor de texto e criar o arquivo, basta pressionar a tecla "Enter". O arquivo vazio será aberto.
+
+Para habilitar a edição de texto no Vim, pressionamos a tecla "I" do teclado, entrando no modo de inserção (insert mode), indicado pela palavra "INSERT" na parte inferior esquerda do editor.
+
+Um script é um tipo de código. Utilizaremos o script do tipo Bash, que oferece funcionalidades básicas de programação e suporte a comandos Linux executados no terminal.
+
+Um script Bash possui uma estrutura. Além da extensão .sh, precisamos especificar algumas informações para indicar que se trata de um script.
+
+A primeira linha que adicionamos é chamada de shebang, começando com #!, seguido do caminho para o interpretador que executará o código. Como é um script Bash, utilizaremos o Bash como interpretador, logo:
+
+#!/bin/bash
+Copiar código
+Os scripts podem ser escritos em diversas linguagens, como Python. Dependendo da linguagem escolhida, muda-se o caminho para o interpretador utilizado.
+
+Agora que configuramos o necessário, podemos pular uma linha e começar a escrever nosso script e adicionar funcionalidades para processar e monitorar os arquivos de log.
+
+Escrevendo o script
+A primeira ação no script é criar uma variável que armazenará o diretório onde estão nossos logs. Uma variável é um recurso no código para armazenar informações. Neste caso, o diretório de logs.
+
+A variável será chamada LOG_DIR. Para atribuir um valor, usamos o sinal de igual. O valor deve ser escrito entre aspas duplas:
+
+LOG_DIR=" "
+Copiar código
+Começamos o caminho com .., que indica que vamos sair da pasta atual. Em seguida, /my_app/logs, que é a pasta criada na atividade de preparação do ambiente:
+
+LOG_DIR="../myapp/logs"
+Copiar código
+As aspas duplas são opcionais ao atribuir valores a uma variável, mas é uma boa prática usá-las para evitar problemas com caracteres especiais.
+
+Outra funcionalidade do script é exibir uma mensagem na tela. Para isso, usamos o comando echo do Linux, que nos permite escrever uma mensagem entre aspas duplas.
+
+Vamos escrever "Verificando logs no diretório" e, em seguida, queremos indicar qual é esse diretório. Como já temos o diretório salvo na variável LOG_DIR, utilizaremos o valor armazenado nela. No script Bash, chamamos a variável usando o sinal de dólar ($) seguido do nome da variável, portanto:
+
+echo "Verificando logs no diretorio $LOG_DIR"
+Copiar código
+Assim, essa mensagem será exibida na tela, quando o script for executado.
+
+Para salvar as alterações no arquivo usando o Vim, é preciso sair do modo de inserção pressionando a tecla "Esc". Assim, entramos no modo de comando.
+
+Agora, ao digitar, o texto aparecerá no canto inferior esquerdo, onde antes estava escrito "INSERT". Para salvar, digitamos :w e pressionamos "Enter".
+
+A letra W vem da palavra "write", que significa "escrever" em inglês.
+
+A mensagem "written" indica que as alterações foram salvas. Para sair do editor de texto, digitamos :q e pressionamos Enter, retornando ao terminal do Linux.
+
+A letra Q vem da palavra "quit", que significa "sair" em inglês.
+
+Já entendemos o que é um script e criamos as primeiras linhas de código. Na sequência, aprenderemos como executar nosso script.
+
+
+
+----------------
+Part 2
+
+Já criamos nosso script com a estrutura inicial e agora queremos executá-lo para verificar se está tudo funcionando conforme o esperado. Porém, no Linux, sempre que desejamos executar um script Bash pela primeira vez, precisamos conceder permissão de execução para ele.
+
+Gerenciando permissões
+Com o terminal aberto na pasta onde está o script, vamos rodar o seguinte comando:
+
+chmod 755 monitoramento-logs.sh
+Copiar código
+Após pressionar "Enter", já teremos aplicado a permissão de execução.
+
+O comando chmod no Linux é utilizado para gerenciar permissões, adicionando ou removendo permissões em arquivos e diretórios. Mas o que significam os números que utilizamos? Como sabemos quais números usar para adicionar e remover essas permissões? Vamos entender em detalhes como funciona essa gestão de permissões no Linux.
+
+Tipos de permissões
+É importante compreender esses detalhes de gerenciamento de permissões, pois são fundamentais para a segurança e administração do sistema. Existem diferentes tipos de permissões que podemos conceder ou retirar de arquivos e diretórios.
+
+A primeira é a permissão de leitura, representada pela letra r (read, em inglês), que permite acessar o conteúdo de um arquivo ou listar arquivos de um diretório.
+
+A segunda é a permissão de escrita, representada pela letra w (de write, em inglês), que permite modificar arquivos ou o conteúdo de um diretório.
+
+Por fim, temos a permissão de execução, representada pela letra x (de execute, em inglês), que permite executar códigos, scripts e acessar diretórios.
+
+Classes de usuário
+Além das permissões, existem classes de usuários no Linux.
+
+A primeira classe é o proprietário, representado pela letra u, que é o dono do arquivo. No nosso script, somos os proprietários.
+
+Em seguida, temos o grupo, representado pela letra g, que é um grupo de usuários que não são os donos do arquivo, mas podem ter acesso a ele. Por exemplo, em uma instituição, é interessante que o time de desenvolvimento tenha acesso ao script. Então, podemos colocar essas pessoas em um grupo e conceder acesso ao grupo.
+
+Por fim, temos outros, representados pela letra o, que são todos os usuários que não são nem o proprietário, nem parte de um grupo. Trata-se de pessoas de outros times que não estão trabalhando diretamente no projeto de processamento de logs.
+
+Existe também a representação de todos os usuários, indicada pela letra a, que engloba proprietário, grupo e outros.
+
+Notação Octal
+Quando escrevemos o comando chmod 755, utilizamos uma notação octal para representar as permissões. Essa notação usa números para indicar o tipo de permissão que estamos aplicando ou removendo.
+
+Cada permissão tem um valor diferente:
+
+leitura (r) tem o valor 4
+gravação (w) tem o valor 2
+execução (x) tem o valor 1
+E o que significa o valor 755? Vamos entender por partes, a seguir.
+
+Cada um desses três algarismos representa uma classe de usuários. O primeiro indica as permissões para a classe de usuário proprietário. O segundo para a classe grupo. O terceiro para outros.
+
+Para chegar ao 7, somamos os valores das permissões. O proprietário tem permissão de leitura (4), gravação (2) e execução (1). Logo, 4 + 2 + 1 será 7.
+
+Para o grupo e outros, que têm apenas permissão de leitura e execução, somamos apenas 4 + 1, resultando em 5. Assim, chegamos ao número 755, do chmod 755.
+
+Notação simbólica
+Além da notação octal, podemos usar a notação simbólica no chmod, que utiliza letras e símbolos para representar operações e usuários:
+
+o operador "+" adiciona permissões,
+o operador "-" remove permissões
+o operador "=" define permissões exatas
+Por exemplo: chmod u+x arquivo.sh. A letra u indica o usuário proprietário. O símbolo de + adiciona uma permissão. A letra x representa a permissão de execução. Em outras palavras, estamos atribuindo a permissão de execução para o proprietário do arquivo arquivo.sh.
+
+Outro exemplo: chmod g-w arquivo.sh. A letra g indica o grupo. O operador - remove uma permissão. O w representa a permissão de gravação. Ou seja, removemos a permissão de gravação do grupo.
+
+Como seria o chmod 755 na notação simbólica? Poderíamos usar o chmod +x Como estamos atribuindo a permissão de execução para todas as classes, podemos emitir a primeira informação, apenas colocando o operador de + e o x, de execução.
+
+Para escolher entre notação octal e simbólica, é interessante considerar alguns aspectos. Por exemplo, a facilidade de uso. A notação octal é mais compacta e simples, enquanto a simbólica é mais específica.
+
+Outro aspecto a se considerar, é o escopo de modificação. Na notação octal, atribuímos permissões para todas as classes, enquanto a notação simbólica permite mais especificidade ao adicionar ou remover permissões.
+
+Há uma atividade "Para saber mais" sobre as notações para você explorar mais o assunto.
+
+Verificando permissões
+Para limpar a tela do terminal, usa-se "Ctrl + L".
+
+Para verificar as permissões de um arquivo, usamos o comando ls -l, que lista os arquivos e suas permissões:
+
+ls -l
+Copiar código
+No início da linha, caracteres indicam o tipo de arquivo e suas permissões. No nosso caso, temos:
+
+-rwxr-xr-x
+
+O primeiro traço indica um arquivo regular. Caso fosse um diretório, seria a letra "d".
+
+Os três primeiros dígitos representam as permissões do proprietário: r de leitura, w de escrita e x de execução.
+
+Os três seguintes indicam permissões do grupo: r de leitura, um traço no lugar do w porque não há permissão de escrita, e o x de execução. Os últimos são as permissões de outros usuários, que são iguais ao anterior.
+
+Em seguida, temos o nome do proprietário e o grupo atribuído ao arquivo.
+
+Executando o script
+Agora que entendemos a gestão de permissões, podemos executar nosso script. Basta executar o seguinte comando:
+
+./monitoramento-logs.sh
+Copiar código
+Dessa forma, veremos na tela a seguinte mensagem:
+
+Verificando logs no diretorio ../myapps/logs
+
+A saída na tela, gerada pelo comando echo, confirma que o script está verificando logs no diretório especificado.
+
+Aprendemos a gerenciar permissões e executar scripts. Na sequência, vamos entender como gerenciar grupos.
+
+------ Observation --------
+Notacao octal:
+Exemplos de Uso
+Se rodarmos o comando:
+
+chmod 644 arquivo.txt
+Copiar código
+Teremos:
+
+6 (Usuário): Leitura (4) + Escrita (2) = 6 (rw-).
+4 (Grupo): Leitura = 4 (r--).
+4 (Outros): Leitura = 4 (r--).
+Neste caso, o proprietário pode ler e modificar o arquivo, enquanto o grupo e outros podem apenas lê-lo.
+
+Se rodarmos o comando:
+
+chmod 700 arquivo.txt
+Copiar código
+Teremos:
+
+7 (Usuário): Leitura (4) + Escrita (2) + Execução (1) = 7 (rwx).
+0 (Grupo): Sem permissão.
+0 (Outros): Sem permissão.
+Aqui, somente o proprietário tem todas as permissões, enquanto o grupo e outros não têm nenhuma.
+
+Desse modo, a notação octal é mais compacta e rápida para definir um conjunto de permissões, alterando todas as permissões de uma vez.
+
+Notacao simbolica:
+Exemplos de Uso
+Vamos analisar alguns exemplos práticos para entender melhor a notação simbólica em comandos:
+
+Se executarmos o comando:
+
+chmod u+r arquivo.txt
+Copiar código
+Ele adiciona permissão de leitura apenas para o proprietário (u). Caso o usuário já tenha permissões adicionais, elas permanecem inalteradas.
+
+Se executarmos o comando:
+
+chmod g-w arquivo.txt
+Copiar código
+Ele remove a permissão de escrita do grupo (g). Isso é útil quando se deseja evitar que o grupo modifique o conteúdo de um arquivo.
+
+Ao executar:
+
+chmod o=x arquivo.txt
+Copiar código
+Definimos a permissão de execução apenas para outros (o) e removemos qualquer outra permissão que o proprietário e o grupo possam ter.
+
+Já o comando:
+
+chmod a+r arquivo.txt
+Copiar código
+Adiciona permissão de leitura para todos os tipos de usuários (a), ou seja, proprietário, grupo e outros. Isso é útil para tornar um arquivo acessível a todos, mantendo as permissões existentes.
+
+Caso desejarmos, é possível combinar os tipos de usuários com diferentes permissões com essa notação, utilizando como separador a vírgula:
+
+chmod u=rwx,g=rx,o=r arquivo.txt
+Copiar código
+Aqui, definimos permissões específicas para cada categoria:
+
+Usuário (u): tem leitura, escrita e execução (rwx).
+Grupo (g): tem leitura e execução (rx).
+Outros (o): têm apenas leitura (r).
+Desse modo, a notação simbólica tem um formato mais explícito e pode ser mais intuitiva para alterações específicas, permitindo a mudança de permissões de forma mais granular.
+
+-------------------------------------------
+Part 3
+
+Nós aprendemos sobre a gestão de permissões no Linux e como executar um script. Agora, vamos estudar sobre gestão de grupos.
+
+Gerenciamento de grupos
+Quando trabalhamos em um projeto de software, é comum haver todo um time envolvido. Nossa aplicação será normalmente executada em um servidor, em uma máquina onde todos terão acesso. Queremos que as pessoas possam acessar nosso script de processamento de logs.
+
+No Linux, a questão das classes de usuários e dos grupos nos ajuda com isso, pois podemos criar um grupo e adicionar diversos usuários para facilitar a gestão de acesso. Assim, em vez de dar permissões individualmente para cada pessoa envolvida no time, podemos utilizar um grupo para facilitar esse processo e atribuir as permissões ao grupo.
+
+Criando usuários
+O meu usuário atual é "gabi", como aparece na tela do meu terminal. Ou seja, este é o nome do meu host. Podemos criar um novo usuário para o time usando o comando sudo adduser seguido do nome. Por exemplo, julia:
+
+sudo adduser julia
+Copiar código
+Em seguida, precisamos informar a senha do usuário atual e responder a algumas perguntas para criar o novo usuário. A primeira delas é a senha do novo usuário. Após informá-la, é preciso repeti-la para confirmar.
+
+Na sequência, há várias outras perguntas sobre nome e número da sala de trabalho, telefone e afins, mas podemos pressionar "Enter" para deixar essas informações em branco. No final, o sistema perguntará se as informações estão corretas. Vamos digitar Y e pressionar "Enter" para confirmar.
+
+Agora, a nova usuária chamada julia foi criada. Para verificar se a criação foi bem-sucedida, podemos rodar o seguinte comando para listar os usuários:
+
+cat /etc/passwd
+Copiar código
+Ao final da lista, temos a nova usuária julia, com seu diretório home.
+
+Criando um grupo
+Queremos que a Julia trabalhe conosco e ajude no script de processamento de logs, sendo capaz de executá-lo. Portanto, criaremos um grupo para adicionar a Julia e outras futuras pessoas colaboradoras do projeto.
+
+Para criar um grupo, rodamos o comando sudo groupadd seguido do nome. Nosso grupo terá pessoas que desenvolverão e executarão o script, então o chamaremos de devs:
+
+sudo addgroup devs
+Copiar código
+Para verificamos se o grupo foi criado com sucesso, rodamos o seguinte comando:
+
+getent group devs
+Copiar código
+O sistema retornará que o grupo existe. Agora, adicionaremos a Julia ao grupo com o seguinte comando:
+
+sudo usermod -aG devs julia
+Copiar código
+Para checar se ela foi adicionada com sucesso, basta executar novamente o comando getent group devs, que mostrará a usuária julia como parte do grupo.
+
+Gerenciando acessos
+O próximo passo é conceder acesso para que as pessoas do grupo, para que possam executar o script. Vamos entrar na pasta onde o script foi criado com cd scripts-linux e rodar o comando ls -ld para conferir as permissões:
+
+drwxr-xr-x gabi gabi
+
+Notamos que o grupo tem permissão de leitura e execução, mas não de escrita. Quando atribuímos essas permissões, é necessário que todos os diretórios-pais também tenham as permissões necessárias.
+
+No momento, o grupo ainda não é devs, mas gabi. Se formos para o diretório-pai com cd .. e rodarmos ls -ld, temos as seguintes permissões:
+
+drwxr-x--- gabi gabi
+
+O grupo também tem permissão de leitura e execução, mas não de escrita. Além disso, o grupo é gabi. O grupo do diretório-pai deve ser o mesmo do diretório-filho que queremos acessar.
+
+Se adicionarmos um grupo apenas na pasta "scripts-linux" e não alterarmos o grupo do diretório-raiz, não conseguiremos acessar a pasta. Portanto, adicionamos o grupo no diretório-pai para evitar problemas de permissão.
+
+Para conferir o caminho da pasta atual, usa-se o comando pwd.
+
+Para alterar o grupo na pasta atual ("/home/gabi"), utilizamos o seguinte comando:
+
+sudo chown -R :devs /home/gabi
+Copiar código
+Essa opção -R aplica a modificação recursivamente a todos os subdiretórios. Ou seja, todas as pastas dentro do "/home/gabi" terão seu grupo alterado. Esse processo pode demorar um pouco, dependendo da quantidade de diretórios no seu computador.
+
+Após a execução, vamos rodar o comando ls -ld e verificar que o grupo foi alterado para devs:
+
+drwxr-x--- gabi devs
+
+Na sequência, verificaremos se a usuária julia consegue executar o script. Vamos alterar o usuário que estamos usando com o seguinte comando:
+
+su - julia
+Copiar código
+Após informar a senha, notaremos que o nome do host mudou. Vamos acessar a pasta dos scripts, executando o seguinte comando:
+
+cd /home/gabi/scripts-linux
+Copiar código
+Lembre-se de remover "gabi" e alterar o comando para condizer com o seu nome de usuário.
+
+Conseguimos acessar a pasta. Agora, vamos rodamos o script com o seguinte comando:
+
+./monitoramento_logs.sh
+Copiar código
+Confirmamos que a usuária julia consegue executar o script!
+
+Ao gerenciar uma máquina ou servidor, é importante verificar se queremos que todos os usuários do grupo tenham acesso a todas as pastas dentro do diretório. É possível conceder acesso a pastas específicas, sem a opção -R.
+
+Para voltar ao usuário gabi, usamos su - gabi e informamos a senha novamente. Assim, retornamos ao usuário original.
+
+Descobrimos que o comando chown é útil na gestão de grupos e usuários no sistema. Aprendemos a gerenciar permissões, grupos e a criar um script. Na sequência, vamos incrementar nosso script de processamento de logs.
