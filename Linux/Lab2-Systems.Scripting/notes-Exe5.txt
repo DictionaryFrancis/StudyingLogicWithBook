@@ -1,0 +1,18 @@
+Doing the Lab 2 Exercises
+
+
+Exercise 5:  
+Use at to schedule a script of your own (e.g. script from previous week or any other script) 
+to run at a designated time (about two or three minutes in the future). 
+
+I did this using the library zenity, a GUI for Linux
+
+I did the bash script:
+#!/bin/bash
+zenity --info --title="Task Completed" --text="Hello, this script ran successfully!"
+
+chmod 755 ./[filename]
+
+./[filename] | at now +2 minutes
+
+Easy

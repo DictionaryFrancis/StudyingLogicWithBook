@@ -1,0 +1,72 @@
+Doing the Lab 2 Exercises
+
+
+Exercise 4:  
+Use at to schedule three different single jobs. First job should create a folder, second job 
+should create a file inside the new folder and the third job should rename the folder. Allow 
+time interval between the jobs. Use atq to confirm the scheduling of the jobs. After jobs has 
+been executed check your working directory for the results. 
+
+
+First Step before start it:
+So at the first attempt using the schedule in Linux
+I want to make a backup of the files that I have in one folder in another so here we go:
+
+First I create the folder in my $HOME variable, a folder that will be the backup, after it I schedule the process
+'at [time]'
+it opens us a prompt to input our command
+
+In our case it will be the copy of the documents
+'cp -r $HOME/[filename] $HOME/[filename]'
+
+CTRL + D (To leave the prompt session)
+
+And it is done, it will schedule for [time]
+
+If I want to see the scheduling I can command 'atq', if I want to delete the command I use 'atrm [schedule code]'
+
+Another Command it will be 'cron' so this one will work in a geral way, so a recurring task, everyday certain hour this happen
+
+So For example, if we want the backup happens everyday at 16:00 we have to:
+'crontab'
+
+it will open a input prompt:
+0 16 * * * cp -r $HOME/[filename] $HOME/[filename]
+
+CTRL + D (To leave the prompt session)
+
+If you want to check digit the command:
+
+crontab -l (List all the task)
+crontab -e (Edit the tasks)
+crontab -r (To remove all tasks)
+
+Solving the exercise:
+# Ensure the 'atd' service is running
+sudo service atd start
+
+# Schedule job 1: Create a folder "TestFolder" in the home directory (runs in 2 minutes)
+echo "mkdir -p $HOME/TestFolder" | at now +2 minutes
+echo "Job 1: Folder 'TestFolder' creation scheduled in 2 minutes."
+
+# Schedule job 2: Create a file inside "TestFolder" (runs in 4 minutes)
+echo "touch $HOME/TestFolder/file.txt" | at now +4 minutes
+echo "Job 2: File 'file.txt' creation scheduled in 4 minutes."
+
+# Schedule job 3: Rename "TestFolder" to "NewFolder" (runs in 6 minutes)
+echo "mv $HOME/TestFolder $HOME/NewFolder" | at now +6 minutes
+echo "Job 3: Rename 'TestFolder' to 'NewFolder' scheduled in 6 minutes."
+
+# List all scheduled jobs
+echo "Scheduled jobs:"
+atq
+
+OUTPUT:
+Job 1: Folder 'TestFolder' creation scheduled in 2 minutes.
+Job 2: File 'file.txt' creation scheduled in 4 minutes.
+Job 3: Rename 'TestFolder' to 'NewFolder' scheduled in 6 minutes.
+Scheduled jobs:
+1    2025-02-16 14:02 a user
+2    2025-02-16 14:04 a user
+3    2025-02-16 14:06 a user
+
